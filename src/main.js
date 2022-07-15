@@ -5,6 +5,7 @@ import ElementUI from 'element-ui';
 import "element-ui/lib/theme-chalk/index.css";
 import store from './store'
 import CreateButton from './plugins/button/index.js'
+import myRouter from './plugins/myRouter/router'
 
 Vue.directive("resize",{
   inserted(el,binding){
@@ -18,6 +19,7 @@ Vue.component('MyComponentA', {
 Vue.config.productionTip = false
 Vue.use(ElementUI);
 Vue.use(CreateButton)
+Vue.use(myRouter)
 
 new Vue({
   router,

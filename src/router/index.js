@@ -58,7 +58,17 @@ const routes = [
     path: '/vuex',
     name:'vuex',
     component: ()=>import('../components/Vuex.vue')
-  }  
+  },
+  {
+    path: '/custom-plugin',
+    name:'自定义按钮插件',
+    component: ()=>import('../components/customPlugin.vue')
+  },
+  {
+    path: '/my-router',
+    name:'手写vue-router',
+    component: ()=>import('../components/myRouter.vue')
+  }
 ]
 
 const router = new VueRouter({
@@ -66,5 +76,5 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
-
+export { routes }
 export default router

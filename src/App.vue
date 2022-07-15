@@ -1,19 +1,33 @@
 <template>
   <div id="app">
-    <h2>Demo</h2>
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/component-data">组件传值</router-link> |
-      <router-link to="/customize">自定义组件</router-link> |
-      <router-link to="/vmodel">双向绑定</router-link> |
-      <router-link to="/obj-define-property">ObjectDefineProperty</router-link> |
-      <router-link to="/slot">插槽</router-link> |
-      <router-link to="/listen-attr">组件通信</router-link> |
-      <router-link to="/renderless">组件复用</router-link> |
-      <router-link to="/vuex">Vuex</router-link>
-    </div>
-    <router-view/>
-    <CreateButton>测试按钮</CreateButton>
+    <el-container style="height: 100%">
+      <el-header>Demo</el-header>
+      <el-container>
+        <el-aside width="20%">
+          <el-col>
+            <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :router="true" >
+              <el-submenu index="1">
+                <template slot="title">
+                  <i class="el-icon-location"></i>
+                  <span slot="title">测试功能</span>
+                </template>
+                <el-menu-item-group>
+                  <span slot="title">分组一</span>
+                  <el-menu-item v-for="(item,index) of menus" :index="index.toString()" :key="index" :route="item.path">
+                    {{ item.name }}
+                  </el-menu-item>
+                </el-menu-item-group>
+              </el-submenu>
+            </el-menu>
+          </el-col>
+        </el-aside>
+        <el-main>
+          <div class="content">
+            <router-view/>
+          </div>
+        </el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
 <style>
@@ -21,20 +35,26 @@
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
 }
 </style>
+
+
+<script>
+import { routes } from "@/router";
+export default {
+  data() {
+    return {
+      menus: routes
+    };
+  },
+  methods: {
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
+    }
+  }
+}
+</script>
