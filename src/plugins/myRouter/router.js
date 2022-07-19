@@ -9,6 +9,11 @@ const routes = [
         path: '/demo',
         name: 'demo',
         component: ()=>import('./Demo')
+    },
+    {
+        path: '/demo2',
+        name: 'demo2',
+        component: ()=>import('./Demo2')
     }
 ]
 
@@ -21,8 +26,18 @@ const createMap = function(routes){
         return pre;
     },{})
 }
-MyVueRouter.install = function (Vue) {
+const routesMap = createMap(routes)
 
+console.log(routesMap)
+MyVueRouter.install = function (Vue) {
+    Vue.mixin({
+        beforeCreate(){
+            if(this.$options && this.$options.router){
+                this._root = this; //把当前实例挂载到_root上
+                this._router = this.$options.router;
+            }
+        }
+    })
     Vue.component('myrouter-link',{
         props:{
             to:String
@@ -40,10 +55,11 @@ MyVueRouter.install = function (Vue) {
             // let current = this._self._root._router.history.current
             // let routeMap = this._self._root._router.routesMap;
             // return h(routeMap[current])
-
             let routeMap = createMap(routes)
-            return h(routeMap[0])
-            // return h('h1', {}, this.blogTitle);
+            console.log(routeMap)
+            // console.log(routeMap.get('demo'))
+            // return h(routeMap[0])
+            return h('h1', {}, '测试');
         }
     })
 
