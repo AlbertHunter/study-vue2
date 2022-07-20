@@ -68,6 +68,16 @@ const routes = [
     path: '/my-router',
     name:'手写vue-router',
     component: ()=>import('../components/myRouter.vue')
+  },
+  {
+    path: '/self-router',
+    name:'手写vue-router2',
+    component: ()=>import('../components/SelfRouter.vue')
+  },
+  {
+    path: '/util-defineReactive',
+    name:'util.defineReactive',
+    component: ()=>import('../components/utilDefineReactive.vue')
   }
 ]
 

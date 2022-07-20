@@ -3,7 +3,7 @@ let url = hash.substring(1)
 if(url.substring(0,1) == '/'){
     url = hash.substring(2)
 }
-console.log(url)
+
 const routes = [
     {
         path: '/demo',
@@ -18,7 +18,15 @@ const routes = [
 ]
 
 class MyVueRouter{
-
+    constructor() {
+        window.addEventListener('hashchange', this.onHashChange.bind(this))//调用bind是因为让onhashchange的this指向self_router
+        window.addEventListener('onload', this.onHashChange.bind(this))
+    }
+    //hash变化时，改变this.current
+    onHashChange() {
+        console.log(this.current)
+        this.current = window.location.hash.slice(1)//截取#之后的hash字符串
+    }
 }
 const createMap = function(routes){
     return routes.reduce((pre,current)=>{
@@ -32,10 +40,8 @@ console.log(routesMap)
 MyVueRouter.install = function (Vue) {
     Vue.mixin({
         beforeCreate(){
-            if(this.$options && this.$options.router){
-                this._root = this; //把当前实例挂载到_root上
-                this._router = this.$options.router;
-            }
+            this.initHash = window.location.hash.slice(1) || '/';
+            Vue.util.defineReactive(this,'current',this.initHash)
         }
     })
     Vue.component('myrouter-link',{
@@ -56,12 +62,13 @@ MyVueRouter.install = function (Vue) {
             // let routeMap = this._self._root._router.routesMap;
             // return h(routeMap[current])
             let routeMap = createMap(routes)
-            console.log(routeMap)
-            // console.log(routeMap.get('demo'))
-            // return h(routeMap[0])
-            return h('h1', {}, '测试');
+            console.log(this.current)
+            let current = this.current
+            return h(routeMap[current])
         }
     })
 
 };
+// const myRouter = new MyVueRouter()
+// export default myRouter
 export default MyVueRouter
