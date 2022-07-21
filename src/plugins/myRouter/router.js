@@ -3,7 +3,10 @@ let url = hash.substring(1)
 if(url.substring(0,1) == '/'){
     url = hash.substring(2)
 }
-
+let self_vue
+let obj = {
+    current:'/'
+}
 const routes = [
     {
         path: '/demo',
@@ -19,6 +22,9 @@ const routes = [
 
 class MyVueRouter{
     constructor() {
+        this.initHash = window.location.hash.slice(1) || '/';
+        self_vue.util.defineReactive(this,'current',this.initHash)
+        self_vue.util.defineReactive(obj,'current',this.initHash)
         window.addEventListener('hashchange', this.onHashChange.bind(this))//调用bind是因为让onhashchange的this指向self_router
         window.addEventListener('onload', this.onHashChange.bind(this))
     }
@@ -38,10 +44,13 @@ const routesMap = createMap(routes)
 
 console.log(routesMap)
 MyVueRouter.install = function (Vue) {
+    self_vue = Vue;
     Vue.mixin({
         beforeCreate(){
-            this.initHash = window.location.hash.slice(1) || '/';
-            Vue.util.defineReactive(this,'current',this.initHash)
+            if (this.$options.router) {
+                console.log(window.location.hash.slice(1) || '/')
+                // Vue.prototype.$router = this.$options.router;
+            }
         }
     })
     Vue.component('myrouter-link',{
@@ -51,19 +60,15 @@ MyVueRouter.install = function (Vue) {
         render(h){
             let to = this.to
             return h('a',{attrs:{href:to}},this.$slots.default)
-            // let mode = this._self._root._router.mode;
-            // let to = mode === "hash"?"#"+this.to:this.to
-            // return h('a',{attrs:{href:to}},this.$slots.default)
         }
     })
     Vue.component('myrouter-view',{
         render(h){
-            // let current = this._self._root._router.history.current
-            // let routeMap = this._self._root._router.routesMap;
-            // return h(routeMap[current])
             let routeMap = createMap(routes)
+            const current = this.$route.hash.slice(1)
             console.log(this.current)
-            let current = this.current
+            console.log(obj.current)
+            // let current = this.current
             return h(routeMap[current])
         }
     })

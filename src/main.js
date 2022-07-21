@@ -55,11 +55,6 @@ utilDemo.install=function(vue){
 
 
 
-
-
-
-
-
 Vue.config.productionTip = false
 Vue.use(ElementUI);
 Vue.use(CreateButton)
